@@ -1,6 +1,15 @@
 #include <iostream>
 #include "graph.h"
 #include "pathfinder.h"
+void printPath(const std::vector<int>& path) {
+    std::cout << "Path: ";
+    for (size_t i = 0; i < path.size(); i++) {
+        std::cout << path[i];
+        if (i + 1 < path.size()) std::cout << " -> ";
+    }
+    std::cout << "\n";
+}
+
 
 int main() {
     Graph graph(6);
@@ -13,15 +22,19 @@ int main() {
     graph.addEdge(0, 5, 10.0);
 
     PathFinder finder(graph);
-    auto path = finder.runAStar(0, 5);
 
-    std::cout << "Path: ";
-    for (int node : path) {
-        std::cout << node << " ";
-    }
+auto pathAStar = finder.run(0, 5, Algorithm::ASTAR);
+std::cout << "[A*]\n";
+printPath(pathAStar);
+std::cout << "Distance: " << finder.pathDistance() << "\n";
+std::cout << "Nodes visited: " << finder.nodesVisited() << "\n\n";
 
-    std::cout << "\nDistance: " << finder.pathDistance();
-    std::cout << "\nNodes visited: " << finder.nodesVisited() << "\n";
+auto pathDijkstra = finder.run(0, 5, Algorithm::DIJKSTRA);
+std::cout << "[Dijkstra]\n";
+printPath(pathDijkstra);
+std::cout << "Distance: " << finder.pathDistance() << "\n";
+std::cout << "Nodes visited: " << finder.nodesVisited() << "\n";
+
 
     return 0;
 }
